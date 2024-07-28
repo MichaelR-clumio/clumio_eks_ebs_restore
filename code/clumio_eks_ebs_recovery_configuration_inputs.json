@@ -1,0 +1,110 @@
+{
+	"clumio_ebs_list_backups": {
+		"execution_inputs":[
+			"bear",
+			"source_account",
+			"source_region",
+			"search_direction",
+			"search_day_offset_input",
+			"velero_manifest",
+			"debug"
+		],
+		"local_inputs":[
+		],
+		"outputs": {
+			"response": [
+				"status",
+				"msg"
+			],
+			"next_inputs": [
+				"record"
+			],
+		},
+		"exit_status": [200,401,402,403]
+	},
+	"clumio_ebs_restore": {
+		"execution_inputs":[
+			"bear",
+			"target_account",
+			"target_region",
+			"target_az",
+			"target_iops",
+			"target_volume_type",
+			"target_kms_key_native_id",
+			"debug"
+		],
+		"local_inputs":[
+			"record"
+		],
+		"outputs": {
+			"response": [
+				"status",
+				"msg",
+				"inputs"
+			],
+			"next_inputs": [
+				"task",
+				"source_backup_id"
+			],
+		},
+		"exit_status": [200,205,401,402,403,404]
+	},
+	"clumio_retrieve_task": {
+		"execution_inputs":[
+			"bear",
+			"debug"
+		],
+		"local_inputs":[
+			"task",
+			"source_backup_id"
+		],
+		"outputs": {
+			"response": [
+				"status",
+				"msg",
+				"inputs"
+			],
+			"next_inputs": [
+				"task",
+				"source_backup_id"
+			],
+		},
+		"exit_status": [200,205,401,402,403]
+	},
+	"aws_create_volume_snapshot": {
+		"execution_inputs":[
+			"target_region",
+			"target_account",
+			"target_role_arn"
+			"velero_manifest",
+			"debug"
+		],
+		"local_inputs":[
+			"source_backup_id"
+		],
+		"outputs": {
+			"response": [
+				"status",
+				"msg",
+				"manifest",
+				"volume_delete_status"
+			],
+			"next_inputs": [],
+		},
+		"exit_status": [201,401,402,403,404,405]
+	},
+	"bear": None,
+	"source_account": None,
+	"source_region": None,
+	"search_direction": "before",
+	"search_day_offset_input": None,
+	"target_account": None,
+	"target_region": None,
+	"target_az": None,
+	"target_iops": None,
+	"target_volume_type": None,
+	"target_kms_key_native_id": None,
+	"target_role_arn": None,
+    "velero_manifest": {},
+	"debug": 0
+}
